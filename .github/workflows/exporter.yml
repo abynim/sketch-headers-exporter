@@ -1,0 +1,90 @@
+name: Sketch Headers Exporter
+
+on:
+  repository_dispatch:
+    types: export-headers
+    
+jobs:
+  export:
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+       repository: abynim/${{github.event.client_payload.repo}}
+       ref: ${{github.event.client_payload.branch}}
+       path: master
+       token: ${{ secrets.GITHUB_PAT }}
+     
+    - name: Delete Files
+      run: |
+        rm ./master/README.md
+        rm ./master/.version
+        rm -r ./master/Headers
+        mkdir ./master/Headers
+        
+    - name: Download Sketch
+      run: |
+       curl -o sketch.zip ${{github.event.client_payload.downloadURL}}
+       unzip sketch.zip
+       
+    - name: Download Class-dump
+      run: |
+       curl -OL https://abynim.com/dev/class-dump.zip
+       unzip class-dump.zip
+       
+    - name: Extract Headers
+      run: |
+       ./class-dump -H "${{github.event.client_payload.bundleName}}.app" -o ./master/Headers
+       ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/BCFoundation.framework" -o ./master/Headers
+       ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/BCLayerList.framework" -o ./master/Headers
+       ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/SketchModel.framework" -o ./master/Headers
+       ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/SketchControllers.framework" -o ./master/Headers
+       ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/SketchPluginManager.framework" -o ./master/Headers
+       ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/SketchRendering.framework" -o ./master/Headers
+       ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/SketchPDF.framework" -o ./master/Headers
+       ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/SketchSVG.framework" -o ./master/Headers
+       ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/SketchToolSupport.framework" -o ./master/Headers
+     
+    - name: Update ReadMe
+      run: |
+        cd ./master
+        touch ./README.md
+        echo "# Sketch-Headers" >> ./README.md
+        echo "" >> ./README.md
+        echo "##### Headers from [Sketch app](http://www.sketch.com) exported using [class-dump](http://stevenygard.com/projects/class-dump/)." >> ./README.md
+        echo "" >> ./README.md
+        echo "\`\`\`" >> ./README.md
+        echo "Latest Version: ${{github.event.client_payload.versionString}} (${{github.event.client_payload.version}})" >> ./README.md
+        echo "Release Date: ${{github.event.client_payload.pubDate}}" >> ./README.md
+        echo "\`\`\`" >> ./README.md
+        echo "" >> ./README.md
+        echo "See previous [commits](https://github.com/abynim/${{github.event.client_payload.repo}}/commits/${{github.event.client_payload.branch}}) for past versions." >> ./README.md
+        echo "" >> ./README.md
+        echo "For headers from beta releases, switch over to the [betas branch](https://github.com/abynim/${{github.event.client_payload.repo}}/tree/betas)." >> ./README.md
+        echo "" >> ./README.md
+        echo "*Disclaimer: The headers are for research purposes only. All code is Copyright © Bohemian Coding.*" >> ./README.md
+        echo "" >> ./README.md
+        
+    - name: Update Version
+      run: |
+        cd ./master
+        touch ./.version
+        echo "${{github.event.client_payload.version}}" >> ./.version
+        
+    - name: Commit files
+      run: |
+        cd master
+        git config --local user.email "${{ secrets.GITHUB_EMAIL }}"
+        git config --local user.name "Aby Nimbalkar"
+        git add -A
+        git commit -m "Version ${{github.event.client_payload.versionString}}" -a
+        
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+       github_token: ${{ secrets.GITHUB_PAT }}
+       directory: master
+       branch: ${{github.event.client_payload.branch}}
+       repository: abynim/${{github.event.client_payload.repo}}
