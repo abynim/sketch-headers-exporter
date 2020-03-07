@@ -88,3 +88,11 @@ jobs:
        directory: master
        branch: ${{github.event.client_payload.branch}}
        repository: abynim/${{github.event.client_payload.repo}}
+       
+    - name: Notify in Slack
+      run: >
+        curl 
+        -X POST 
+        -H 'Content-type: application/json' 
+        --data '{"text":"Headers for ${{github.event.client_payload.bundleName}} ${{github.event.client_payload.versionString}} were added. \nhttps://github.com/abynim/${{github.event.client_payload.repo}}/commits/${{github.event.client_payload.branch}}"}' 
+        ${{secrets.SLACK_WEBHOOK}}
