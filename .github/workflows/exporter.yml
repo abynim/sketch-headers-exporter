@@ -71,7 +71,7 @@ jobs:
       run: |
         cd ./master
         touch ./.version
-        echo "${{github.event.client_payload.version}}" >> ./.version
+        echo "${{github.event.client_payload.versionString}}" >> ./.version
         
     - name: Commit files
       run: |
