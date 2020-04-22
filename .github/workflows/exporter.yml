@@ -39,7 +39,9 @@ jobs:
        ./class-dump -H "${{github.event.client_payload.bundleName}}.app" -o ./master/Headers
        ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/BCFoundation.framework" -o ./master/Headers
        ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/BCLayerList.framework" -o ./master/Headers
+       ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/DocumentLinting.framework" -o ./master/Headers
        ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/SketchModel.framework" -o ./master/Headers
+       ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/SketchCloudKit.framework" -o ./master/Headers
        ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/SketchControllers.framework" -o ./master/Headers
        ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/SketchPluginManager.framework" -o ./master/Headers
        ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/SketchRendering.framework" -o ./master/Headers
