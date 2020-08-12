@@ -37,6 +37,7 @@ jobs:
     - name: Extract Headers
       run: |
        ./class-dump -H "${{github.event.client_payload.bundleName}}.app" -o ./master/Headers
+       ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/Assistants.framework" -o ./master/Headers
        ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/BCFoundation.framework" -o ./master/Headers
        ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/BCLayerList.framework" -o ./master/Headers
        ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/Chocolat.framework" -o ./master/Headers
