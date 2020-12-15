@@ -27,6 +27,9 @@ jobs:
     - name: Download Sketch
       run: |
        curl -o sketch.zip ${{github.event.client_payload.downloadURL}}
+       
+    - name: Unzip Sketch
+      run: |
        unzip sketch.zip
        
     - name: Download Class-dump
