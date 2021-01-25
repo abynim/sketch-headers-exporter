@@ -16,17 +16,22 @@ jobs:
        ref: ${{github.event.client_payload.branch}}
        path: master
        token: ${{ secrets.GITHUB_PAT }}
-     
+    
     - name: Delete Files
       run: |
         rm ./master/README.md
         rm ./master/.version
         rm -r ./master/Headers
         mkdir ./master/Headers
+    
+    - name: Download DL
+      run: |
+       curl -OL https://abynim.com/dev/dl.zip
+       unzip dl.zip
         
     - name: Download Sketch
       run: |
-       curl -o sketch.zip ${{github.event.client_payload.downloadURL}}
+       ./dl sketch.zip ${{github.event.client_payload.downloadURL}}
        
     - name: Unzip Sketch
       run: |
