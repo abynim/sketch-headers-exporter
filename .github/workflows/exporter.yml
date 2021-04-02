@@ -49,9 +49,12 @@ jobs:
        ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/BCFoundation.framework" -o ./master/Headers
        ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/BCLayerList.framework" -o ./master/Headers
        ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/Chocolat.framework" -o ./master/Headers
-       ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/SketchModel.framework" -o ./master/Headers
+       ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/SharedEditing.framework" -o ./master/Headers
        ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/SketchCloudKit.framework" -o ./master/Headers
        ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/SketchControllers.framework" -o ./master/Headers
+       ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/SketchMirrorServerKit.framework" -o ./master/Headers
+       ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/SketchMirrorTalk.framework" -o ./master/Headers
+       ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/SketchModel.framework" -o ./master/Headers
        ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/SketchPluginManager.framework" -o ./master/Headers
        ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/SketchRendering.framework" -o ./master/Headers
        ./class-dump -H "${{github.event.client_payload.bundleName}}.app/Contents/Frameworks/SketchPDF.framework" -o ./master/Headers
